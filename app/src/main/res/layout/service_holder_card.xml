@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="185dp"
+        android:layout_height="31dp"
+        android:gravity="center"
+        android:text="Ac Service" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="100" />
+</LinearLayout>
