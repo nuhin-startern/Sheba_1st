@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.nuhin13.sheba_1st.Informations.Information_for_service_holder;
+import com.example.nuhin13.sheba_1st.Informations.Information_for_specific;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -78,6 +81,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Information_for_service_holder userModel = new Information_for_service_holder();
                 userModel.setPhone(c.getString(c.getColumnIndex(KEY_PHONE)));
                 userModel.setEmail(c.getString(c.getColumnIndex(KEY_EMAIL)));
+               // userModel.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
+               // userModel.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+
 
                 userModelArrayList.add(userModel);
                 } while (c.moveToNext());
@@ -86,7 +92,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // User LogIn
-
     public boolean checkUser(String phone, String password) {
 
         // array of columns to fetch
@@ -114,20 +119,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         if (cursorCount > 0) {
+            //Log.d("oppp", cursor);
             return true;
         }
 
         return false;
     }
 
-    public void updateUser(int id, String name, String email) {
+    public void particularInformation(String phone){
+
+
+        String query = "SELECT * FROM "+ TABLE_USER+ " WHERE "+ KEY_PHONE + " = " + phone ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor  cursor = db.rawQuery(query,null);
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() != true) {
+
+                Information_for_specific sp = new Information_for_specific();
+                sp.setPhone(cursor.getString(cursor.getColumnIndex(KEY_PHONE)));
+                sp.setEmail(cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
+                //sp.set(cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
+                // userModel.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
+                // userModel.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+
+//                String itemname =  cursor.getString(cursor.getColumnIndex("item_name")));
+            }
+        }
+    }
+    public void updateUserWithPass(int id, String phone, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // updating name in users table
-       /* ContentValues values = new ContentValues();
-        values.put(KEY_FIRSTNAME, name);
+        ContentValues values = new ContentValues();
+        values.put(KEY_PHONE, phone);
+        values.put(KEY_EMAIL, email);
+        values.put(KEY_PHONE, password);
+
         db.update(TABLE_USER, values, KEY_ID + " = ?", new String[]{String.valueOf(id)});
-       */
+
+    }
+
+    public void updateUser(int id, String phone, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // updating name in users table
+        ContentValues values = new ContentValues();
+        values.put(KEY_PHONE, phone);
+        values.put(KEY_EMAIL, email);
+
+        db.update(TABLE_USER, values, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
     }
 
     public void deleteUSer(int id) {

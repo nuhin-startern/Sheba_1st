@@ -66,8 +66,13 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
                 if(!phone.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
 
                     if(password.equals(confirm_password)){
-                        progress.setVisibility(View.VISIBLE);
-                        registerProcess(phone, email, password);
+                        if(password.length()>6){
+                            progress.setVisibility(View.VISIBLE);
+                            registerProcess(phone, email, password);
+                        }else {
+                            Snackbar.make(getView(), "Password 6 Characters", Snackbar.LENGTH_LONG).show();
+                        }
+
                     }else {
                         Snackbar.make(getView(), "Password Not Match..", Snackbar.LENGTH_LONG).show();
                     }

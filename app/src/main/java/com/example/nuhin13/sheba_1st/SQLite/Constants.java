@@ -6,5 +6,8 @@ public class Constants {
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    public static final String phone = "phone";
+
+
 
 }

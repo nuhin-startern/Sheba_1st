@@ -1,13 +1,10 @@
 package com.example.nuhin13.sheba_1st.Informations;
 
-import java.io.Serializable;
-
 /**
  * Created by Nuhin13 on 5/30/2017.
  */
 
-public class Information_for_service_holder {
-
+public class Information_for_specific {
     public String getEmail() {
         return Email;
     }
@@ -24,7 +21,25 @@ public class Information_for_service_holder {
         Phone = phone;
     }
 
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String Email;
     public String Phone;
+    public String Password;
+    public int id;
 
 }

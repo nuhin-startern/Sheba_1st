@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:weightSum="1"
-    android:layout_marginTop="10dp">
+    android:layout_height="120dp"
+    android:layout_gravity="center"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="false"
+    >
 
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="185dp"
-        android:layout_height="31dp"
-        android:gravity="center"
-        android:text="Ac Service" />
-
-    <TextView
-        android:id="@+id/email"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="center"
-        android:text="100" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_person"
+            android:layout_toLeftOf="@+id/txt_service_holder_email"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/profilePic"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@+id/txt_service_holder_email"
+            android:layout_width="220dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorAccent"
+            tools:text="Service: Ac Servicing"
+            android:layout_alignBottom="@+id/call_customer"
+            android:layout_toLeftOf="@+id/call_customer"
+            android:layout_toStartOf="@+id/call_customer" />
+
+        <TextView
+            android:id="@+id/txt_service_holder_phone"
+            android:layout_width="220dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="Name: Jodu"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/profilePic"
+            android:layout_toEndOf="@+id/profilePic"
+            android:layout_marginTop="12dp" />
+
+        <ImageButton
+            android:id="@+id/call_customer"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/cards_button_width"
+            android:layout_height="@dimen/cards_button_height"
+            app:srcCompat="@drawable/ic_menu_send"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
