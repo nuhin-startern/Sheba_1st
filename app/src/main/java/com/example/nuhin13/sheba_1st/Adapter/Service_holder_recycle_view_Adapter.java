@@ -10,11 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nuhin13.sheba_1st.Informations.Information_for_service_holder;
-
 import com.example.nuhin13.sheba_1st.R;
-
 import java.util.ArrayList;
 
 public class Service_holder_recycle_view_Adapter extends RecyclerView.Adapter<Service_holder_recycle_view_Adapter.MyViewHolder> {
@@ -70,9 +69,28 @@ public class Service_holder_recycle_view_Adapter extends RecyclerView.Adapter<Se
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             service_holder_phone = (TextView) itemView.findViewById(R.id.phone);
             service_holder_email = (TextView) itemView.findViewById(R.id.email);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Context context1 = v.getContext();
+                    Toast.makeText( context1, getAdapterPosition() + " is clicked!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    deleteItem(getAdapterPosition());
+                    Context context1 = v.getContext();
+                    Toast.makeText( context1, getAdapterPosition() + " is clicked Long & Deleted!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
 
         }
     }
@@ -90,5 +108,14 @@ public class Service_holder_recycle_view_Adapter extends RecyclerView.Adapter<Se
 
         data.add(position, infoData);
         notifyItemInserted(position);
+    }
+
+    private void deleteItem(int position) {
+
+        //Toast.makeText(getContext(),"Removed : " + getinfo(position) ,Toast.LENGTH_SHORT).show();
+        data.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, data.size());
+
     }
 }

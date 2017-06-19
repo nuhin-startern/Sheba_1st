@@ -47,6 +47,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(RecycleViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
         return view;
 
     }
