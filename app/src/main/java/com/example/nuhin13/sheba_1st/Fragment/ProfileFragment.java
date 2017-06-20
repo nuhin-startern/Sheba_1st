@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.nuhin13.sheba_1st.Adapter.Service_holder_recycle_view_Adapter;
 import com.example.nuhin13.sheba_1st.Informations.Information_for_service_holder;
+import com.example.nuhin13.sheba_1st.Informations.Information_for_specific;
 import com.example.nuhin13.sheba_1st.R;
 import com.example.nuhin13.sheba_1st.SQLite.Constants;
 import com.example.nuhin13.sheba_1st.SQLite.DatabaseHelper;
@@ -33,9 +34,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     RecyclerView recyclerView;
 
     ArrayList<Information_for_service_holder> Dataadapter;
+    ArrayList<Information_for_specific> SpecificData;
 
     Service_holder_recycle_view_Adapter RecycleViewAdapter;
-
+    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        DatabaseHelper db = new DatabaseHelper(getActivity());
+        db=new DatabaseHelper(getActivity());
         Dataadapter = db.getAllUsers();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_service_holder);

@@ -91,6 +91,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             editor.putBoolean(Constants.IS_LOGGED_IN,true);
             editor.putString(Constants.phone,phone);
             editor.apply();
+
+            /*String i = pref.getString(Constants.phone,"dd");
+            Toast.makeText(getActivity(),i+" erq",Toast.LENGTH_LONG).show();*/
             goToProfile();
 
         } else {

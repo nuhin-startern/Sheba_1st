@@ -2,11 +2,13 @@ package com.example.nuhin13.sheba_1st.Fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nuhin13.sheba_1st.Informations.Information_for_service_holder;
+import com.example.nuhin13.sheba_1st.Informations.Information_for_specific;
 import com.example.nuhin13.sheba_1st.R;
+import com.example.nuhin13.sheba_1st.SQLite.Constants;
 import com.example.nuhin13.sheba_1st.SQLite.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -29,20 +33,25 @@ public class EditFragment extends Fragment  implements View.OnClickListener{
     private EditText et_email, et_phone, et_password, et_confirm_password ;
     private TextView tv_login;
     private ProgressBar progress;
-
     private SharedPreferences pref;
 
-    private ArrayList<Information_for_service_holder> data;
+    DatabaseHelper dbHelper;
 
+    private Information_for_specific SP;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_edit,container,false);
+
+        pref = getActivity().getSharedPreferences("prefName", Context.MODE_PRIVATE);
+        String phone = pref.getString(Constants.phone,"99");
+        Log.d("ksnfkghn ",phone);
+        Toast.makeText(getActivity(),phone,Toast.LENGTH_LONG).show();
+        dbHelper = new DatabaseHelper(getActivity());
+
+        SP = dbHelper.getUserData(phone);
+
         initViews(view);
-
-        Intent intent = getActivity().getIntent();
-        Information_for_service_holder in = (Information_for_service_holder) intent.getSerializableExtra("user");
-
         return view;
     }
 
@@ -56,10 +65,9 @@ public class EditFragment extends Fragment  implements View.OnClickListener{
         et_password = (EditText)view.findViewById(R.id.et_password_edit);
         et_confirm_password = (EditText)view.findViewById(R.id.et_confirm_password_edit);
 
-        Information_for_service_holder info= new Information_for_service_holder();
 
-        et_phone.setText(info.getPhone()+"ddsf");
-       // et_email.setText(Information_for_service_holder.getEmail());
+        et_phone.setText(SP.getPhone());
+        et_email.setText(SP.getEmail());
         progress = (ProgressBar)view.findViewById(R.id.progress);
 
         btn_edit.setOnClickListener(this);
@@ -73,29 +81,35 @@ public class EditFragment extends Fragment  implements View.OnClickListener{
         switch (v.getId()){
 
             case R.id.btn_back:
-                Toast.makeText(getActivity(),"dadf",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"dadf",Toast.LENGTH_LONG).show();
                 goToProfile();
                 break;
 
             case R.id.btn_edit:
 
-                Toast.makeText(getActivity(),"daeqrqrqrdf",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"daeqrqrqrdf",Toast.LENGTH_LONG).show();
                // int id = Information_for_service_holder.getId();
                 String phone = et_phone.getText().toString();
                 String email = et_email.getText().toString();
                 String old_password = et_password.getText().toString();
                 String new_password = et_confirm_password.getText().toString();
+                String MainPass = SP.getPassword();
+                int id = SP.getId();
 
-             /*   if(old_password == "" && new_password == ""){
+                if(old_password.isEmpty() && new_password.isEmpty()){
                     upgrateProcess(id, phone, email);
+                    goToProfile();
+                    Snackbar.make(getView(), "Succesfully Edited without Password", Snackbar.LENGTH_LONG).show();
 
                 }else{
-                    if(old_password.equals(Information_for_service_holder.getPassword())){
+                    if(old_password.equals(MainPass)){
                         upgrateProcessWithPass(id,phone,email,new_password);
+                        Snackbar.make(getView(), "Succesfully Edited with Password", Snackbar.LENGTH_LONG).show();
                     }else{
-                        Snackbar.make(getView(), "Password Not Match..", Snackbar.LENGTH_LONG).show();
+
+                        Snackbar.make(getView(), "Password Not Match.."+ old_password, Snackbar.LENGTH_LONG).show();
                     }
-                }*/
+                }
 
                 break;
 

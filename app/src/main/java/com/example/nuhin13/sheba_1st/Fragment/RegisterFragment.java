@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.example.nuhin13.sheba_1st.R;
 import com.example.nuhin13.sheba_1st.SQLite.DatabaseHelper;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class RegisterFragment extends Fragment  implements View.OnClickListener{
 
@@ -23,11 +26,16 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
     private EditText et_email, et_phone, et_password, et_confirm_password ;
     private TextView tv_login;
     private ProgressBar progress;
+    private boolean PhoneExits;
+
+    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_register,container,false);
+
+        db = new DatabaseHelper(getActivity());
         initViews(view);
         return view;
     }
@@ -51,7 +59,7 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_login:
                 goToLogin();
                 break;
@@ -63,34 +71,45 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
                 String password = et_password.getText().toString();
                 String confirm_password = et_confirm_password.getText().toString();
 
-                if(!phone.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
+                PhoneExits = db.CheckPhoneInDatabase(phone);
 
-                    if(password.equals(confirm_password)){
-                        if(password.length()>6){
-                            progress.setVisibility(View.VISIBLE);
-                            registerProcess(phone, email, password);
-                        }else {
-                            Snackbar.make(getView(), "Password 6 Characters", Snackbar.LENGTH_LONG).show();
+                if (!phone.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
+                    if (!PhoneExits) {
+                        if (emailValidator(email)) {
+                            if (password.equals(confirm_password)) {
+                                if (password.length() > 6) {
+                                    progress.setVisibility(View.VISIBLE);
+                                    registerProcess(phone, email, password);
+                                } else {
+                                    Snackbar.make(getView(), "Password 6 Characters", Snackbar.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Snackbar.make(getView(), "Password Not Match..", Snackbar.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Snackbar.make(getView(), "Email is not valid", Snackbar.LENGTH_LONG).show();
                         }
-
-                    }else {
-                        Snackbar.make(getView(), "Password Not Match..", Snackbar.LENGTH_LONG).show();
+                    } else{
+                        Snackbar.make(getView(), "Phone is Already in Database", Snackbar.LENGTH_LONG).show();
                     }
-
-
                 } else {
-
                     Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
                 }
                 break;
-
         }
+    }
 
+    public boolean emailValidator(String email) {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     private void registerProcess(String phone, String email, String password){
 
-        DatabaseHelper db = new DatabaseHelper(getActivity());
         db.addUser(phone,email,password);
         Toast.makeText(getActivity(),"Success ",Toast.LENGTH_LONG).show();
         goToLogin();

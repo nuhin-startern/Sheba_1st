@@ -126,26 +126,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public void particularInformation(String phone){
 
+    public Information_for_specific getUserData(String Phone) {
 
-        String query = "SELECT * FROM "+ TABLE_USER+ " WHERE "+ KEY_PHONE + " = " + phone ;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor  cursor = db.rawQuery(query,null);
-        if (cursor.moveToFirst()) {
-            while (cursor.isAfterLast() != true) {
 
-                Information_for_specific sp = new Information_for_specific();
-                sp.setPhone(cursor.getString(cursor.getColumnIndex(KEY_PHONE)));
-                sp.setEmail(cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
-                //sp.set(cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
-                // userModel.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
-                // userModel.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        String selectQuery = "SELECT * FROM " + TABLE_USER + " WHERE "
+                + KEY_PHONE + " = " + Phone;
 
-//                String itemname =  cursor.getString(cursor.getColumnIndex("item_name")));
-            }
-        }
+        Log.d("LOG ", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        Log.d("LOGE ",c.getInt(c.getColumnIndex(KEY_EMAIL))+" dsf");
+        if (c != null)
+            c.moveToFirst();
+
+        Information_for_specific SpecificUnit = new Information_for_specific();
+        SpecificUnit.setId(c.getInt(c.getColumnIndex(KEY_ID)));//KEY_ID key for fetching id
+        SpecificUnit.setEmail((c.getString(c.getColumnIndex(KEY_EMAIL))));//KEY_BREAKFAST key for fetching isBreakfast
+        SpecificUnit.setPassword((c.getString(c.getColumnIndex(KEY_PASSWORD))));//KEY_LUNCH key for fetching isLunch
+        SpecificUnit.setPhone((c.getString(c.getColumnIndex(KEY_PHONE))));//KEY_VEGETABLE key for fetching vegetables
+
+        return SpecificUnit;
     }
+
+
     public void updateUserWithPass(int id, String phone, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -153,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_PHONE, phone);
         values.put(KEY_EMAIL, email);
-        values.put(KEY_PHONE, password);
+        values.put(KEY_PASSWORD, password);
 
         db.update(TABLE_USER, values, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
@@ -169,6 +175,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update(TABLE_USER, values, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
+    }
+
+    public boolean CheckPhoneInDatabase( String phone ) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "
+                + KEY_PHONE + " = " + phone;
+
+        Log.d("LOG phn ", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()){
+            return true;
+        }else
+            return false;
     }
 
     public void deleteUSer(int id) {
