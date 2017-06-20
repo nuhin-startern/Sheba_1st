@@ -138,7 +138,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        Log.d("LOGE ",c.getInt(c.getColumnIndex(KEY_EMAIL))+" dsf");
+//        Log.d("LOGE ",c.getInt(c.getColumnIndex(KEY_EMAIL))+" dsf");
         if (c != null)
             c.moveToFirst();
 
